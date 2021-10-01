@@ -16,6 +16,8 @@
   become: true
   tasks:
 
+
+
   # Installing ELK
 
   - name: Pre-requisite of elastic (ELK)
@@ -27,7 +29,7 @@
       update_cache: yes
 
 
-  - name: Elastic search repository 
+  - name: Elastic search repository
     yum_repository:
       name: Elastic_7.X_repo
       baseurl: https://artifacts.elastic.co/packages/7.x/yum
@@ -72,6 +74,9 @@
       gpgkey: https://artifacts.elastic.co/GPG-key-elasticsearch
       enabled: yes
       description: Elastic 7.x Repository
+
+
+   #Installing Logstash
 
   - name: Logstash install 
     yum:
@@ -124,20 +129,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    # Installing Grafana+Prometheus 
 
 
@@ -163,3 +154,21 @@
     service:
       name: prometheus
       state: started
+
+
+  - name: influxdb repo
+    copy:
+      src: influxdb.repo
+      dest: /etc/yum.repos.d/
+
+  - name: InstallInfluxdb
+    yum:
+      name: influxdb
+      state: latest
+      update_cache: yes
+
+  - name: start influxdb
+    service:
+      name: influxdb
+      state: started
+
